@@ -4,51 +4,58 @@ import axios from "axios";
 function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  const API_URL = "http://127.0.0.1:8000/api/tasks";
+  const token = localStorage.getItem("token");
 
-  const getToken = () => {
-    return localStorage.getItem("token");
-  };
+  const API_URL =
+    "https://personalportfoliotaskapp.onrender.com/api/tasks";
 
   // GET TASKS
   const getTasks = async () => {
     try {
       const response = await axios.get(API_URL, {
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       setTasks(response.data);
     } catch (error) {
-      alert("Please login first to view tasks");
+      console.log(error);
     }
   };
 
-  // POST TASK
+  // ADD TASK
   const addTask = async (e) => {
     e.preventDefault();
+
+    if (!title || !description) {
+      alert("Please enter all fields");
+      return;
+    }
 
     try {
       await axios.post(
         API_URL,
         {
           title,
-          description: "Task added from frontend",
+          description,
           status: "Pending",
         },
         {
           headers: {
-            Authorization: `Bearer ${getToken()}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       setTitle("");
+      setDescription("");
+
       getTasks();
     } catch (error) {
-      alert("Please login first to add task");
+      console.log(error);
     }
   };
 
@@ -57,13 +64,13 @@ function Tasks() {
     try {
       await axios.delete(`${API_URL}/${id}`, {
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       getTasks();
     } catch (error) {
-      alert("Delete failed");
+      console.log(error);
     }
   };
 
@@ -75,19 +82,18 @@ function Tasks() {
         {
           title: task.title,
           description: task.description,
-          completed: true,
           status: "Completed",
         },
         {
           headers: {
-            Authorization: `Bearer ${getToken()}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       getTasks();
     } catch (error) {
-      alert("Task update failed");
+      console.log(error);
     }
   };
 
@@ -108,6 +114,13 @@ function Tasks() {
           required
         />
 
+        <textarea
+          placeholder="Enter task description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+
         <button type="submit">Add Task</button>
       </form>
 
@@ -115,11 +128,27 @@ function Tasks() {
         {tasks.map((task) => (
           <div className="task-card" key={task._id}>
             <h3>{task.title}</h3>
+
             <p>{task.description}</p>
-            <p>Status: {task.status || (task.completed ? "Completed" : "Pending")}</p>
+
+            <p>
+              Status:
+              <span
+                style={{
+                  color:
+                    task.status === "Completed" ? "lightgreen" : "orange",
+                  marginLeft: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                {task.status}
+              </span>
+            </p>
 
             <div className="task-buttons">
-              <button onClick={() => completeTask(task)}>Completed</button>
+              <button onClick={() => completeTask(task)}>
+                Complete
+              </button>
 
               <button
                 className="delete-btn"
