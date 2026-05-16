@@ -1,69 +1,85 @@
 const express = require("express");
+const Task = require("../models/Task");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-let tasks = [
-  {
-    id: 1,
-    title: "Complete Assignment",
-    status: "Pending"
+// CREATE TASK
+router.post("/", protect, async (req, res) => {
+  try {
+    const { title, description, status } = req.body;
+
+    const newTask = new Task({
+      title,
+      description,
+      status,
+    });
+
+    const savedTask = await newTask.save();
+
+    res.status(201).json(savedTask);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
   }
-];
-
-// GET all tasks
-router.get("/", (req, res) => {
-  res.json(tasks);
 });
 
-// POST task
-router.post("/", (req, res) => {
+// GET ALL TASKS
+router.get("/", protect, async (req, res) => {
+  try {
+    const tasks = await Task.find().sort({ createdAt: -1 });
 
-  const newTask = {
-    id: tasks.length + 1,
-    title: req.body.title,
-    status: req.body.status
-  };
-
-  tasks.push(newTask);
-
-  res.json({
-    message: "Task Added Successfully",
-    task: newTask
-  });
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 });
 
-// PUT task
-router.put("/:id", (req, res) => {
+// UPDATE TASK
+router.put("/:id", protect, async (req, res) => {
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
 
-  const taskId = parseInt(req.params.id);
+    if (!updatedTask) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
 
-  const task = tasks.find(t => t.id === taskId);
+    res.json(updatedTask);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 
-  if (task) {
-    task.title = req.body.title;
-    task.status = req.body.status;
+// DELETE TASK
+router.delete("/:id", protect, async (req, res) => {
+  try {
+    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+
+    if (!deletedTask) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
 
     res.json({
-      message: "Task Updated Successfully",
-      task
+      message: "Task deleted successfully",
     });
-  } else {
-    res.status(404).json({
-      message: "Task Not Found"
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
     });
   }
-});
-
-// DELETE task
-router.delete("/:id", (req, res) => {
-
-  const taskId = parseInt(req.params.id);
-
-  tasks = tasks.filter(t => t.id !== taskId);
-
-  res.json({
-    message: "Task Deleted Successfully"
-  });
 });
 
 module.exports = router;
