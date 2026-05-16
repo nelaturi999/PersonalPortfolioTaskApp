@@ -1,38 +1,123 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./App.css";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
 
-  const addTask = () => {
-    if (taskName.trim() === "") return;
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
-    const newTask = {
-      id: Date.now(),
-      title: taskName,
-      completed: false,
-    };
+  const [regName, setRegName] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
 
-    setTasks([...tasks, newTask]);
-    setTaskName("");
+  const AUTH_API = "http://localhost:8000/api/auth";
+  const TASK_API = "http://localhost:8000/api/tasks";
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get(TASK_API);
+      setTasks(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const completeTask = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const addTask = async () => {
+    if (
+      taskName.trim() === "" ||
+      taskDescription.trim() === ""
+    ) {
+      alert("Please enter title and description");
+      return;
+    }
+
+    try {
+      await axios.post(TASK_API, {
+        title: taskName,
+        description: taskDescription,
+      });
+
+      setTaskName("");
+      setTaskDescription("");
+
+      fetchTasks();
+    } catch (error) {
+      alert("Failed to add task");
+    }
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const completeTask = async (task) => {
+    try {
+      await axios.put(`${TASK_API}/${task._id}`, {
+        completed: !task.completed,
+      });
+
+      fetchTasks();
+    } catch (error) {
+      alert("Failed to update task");
+    }
+  };
+
+  const deleteTask = async (id) => {
+    try {
+      await axios.delete(`${TASK_API}/${id}`);
+      fetchTasks();
+    } catch (error) {
+      alert("Failed to delete task");
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(`${AUTH_API}/register`, {
+        name: regName,
+        email: regEmail,
+        password: regPassword,
+      });
+
+      alert(response.data.message);
+
+      setRegName("");
+      setRegEmail("");
+      setRegPassword("");
+    } catch (error) {
+      alert(error.response?.data?.message || "Registration failed");
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(`${AUTH_API}/login`, {
+        email: loginEmail,
+        password: loginPassword,
+      });
+
+      alert(response.data.message);
+
+      setLoginEmail("");
+      setLoginPassword("");
+    } catch (error) {
+      alert(error.response?.data?.message || "Login failed");
+    }
   };
 
   const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((task) => task.completed).length;
-  const pendingTasks = tasks.filter((task) => !task.completed).length;
+
+  const completedTasks = tasks.filter(
+    (task) => task.completed
+  ).length;
+
+  const pendingTasks = tasks.filter(
+    (task) => !task.completed
+  ).length;
 
   return (
     <div className="app">
@@ -58,11 +143,13 @@ function App() {
           />
 
           <h2>Hi, I am N Sasankaru Reddy</h2>
+
           <h3>Full Stack Development Student</h3>
 
           <p>
-            This is my Personal Portfolio and Task Management Web Application
-            built using React.js, Node.js, Express.js, and MongoDB.
+            This is my Personal Portfolio and Task
+            Management Web Application built using
+            React.js, Node.js, Express.js, and MongoDB.
           </p>
 
           <div className="hero-buttons">
@@ -80,24 +167,28 @@ function App() {
       <section className="cards-section">
         <div className="info-card">
           <h3>Portfolio</h3>
+
           <p>
-            Includes student details, about section, skills, projects, and
-            contact information.
+            Includes student details, skills,
+            projects, and contact information.
           </p>
         </div>
 
         <div className="info-card">
           <h3>Task Manager</h3>
+
           <p>
-            Users can add, delete, complete, and view tasks using CRUD
-            operations.
+            Users can add, complete, and delete
+            tasks using CRUD operations.
           </p>
         </div>
 
         <div className="info-card">
           <h3>Full Stack App</h3>
+
           <p>
-            Frontend is connected with backend APIs and database integration.
+            Frontend is connected with backend APIs
+            and database integration.
           </p>
         </div>
       </section>
@@ -140,32 +231,67 @@ function App() {
         <div className="task-input-box">
           <input
             type="text"
-            placeholder="Enter your task"
+            placeholder="Enter task title"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
           />
+        </div>
 
-          <button onClick={addTask}>Add Task</button>
+        <div className="task-input-box">
+          <input
+            type="text"
+            placeholder="Enter task description"
+            value={taskDescription}
+            onChange={(e) =>
+              setTaskDescription(e.target.value)
+            }
+          />
+        </div>
+
+        <div className="task-input-box">
+          <button onClick={addTask}>
+            Add Task
+          </button>
         </div>
 
         <div className="task-list">
           {tasks.length === 0 ? (
-            <p className="empty-task">No tasks added yet.</p>
+            <p className="empty-task">
+              No tasks added yet.
+            </p>
           ) : (
             tasks.map((task) => (
-              <div className="task-item" key={task.id}>
-                <span className={task.completed ? "completed" : ""}>
-                  {task.title}
-                </span>
+              <div className="task-item" key={task._id}>
+                <div className="task-content">
+                  <h3
+                    className={
+                      task.completed ? "completed" : ""
+                    }
+                  >
+                    {task.title}
+                  </h3>
 
-                <div>
-                  <button onClick={() => completeTask(task.id)}>
-                    {task.completed ? "Undo" : "Complete"}
+                  <p className="task-description">
+                    {task.description}
+                  </p>
+                </div>
+
+                <div className="task-buttons">
+                  <button
+                    onClick={() =>
+                      completeTask(task)
+                    }
+                  >
+                    {task.completed
+                      ? "Undo"
+                      : "Complete"}
                   </button>
 
                   <button
                     className="delete-btn"
-                    onClick={() => deleteTask(task.id)}
+                    onClick={() =>
+                      deleteTask(task._id)
+                    }
                   >
                     Delete
                   </button>
@@ -176,8 +302,132 @@ function App() {
         </div>
       </section>
 
+      <section className="auth-wrapper">
+        <div className="auth-card" id="login">
+          <div className="auth-icon">🔐</div>
+
+          <h2>Login</h2>
+
+          <p className="auth-text">
+            Access your task manager account
+          </p>
+
+          <div className="input-group">
+            <label>Email Address</label>
+
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={loginEmail}
+              onChange={(e) =>
+                setLoginEmail(e.target.value)
+              }
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Password</label>
+
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={loginPassword}
+              onChange={(e) =>
+                setLoginPassword(e.target.value)
+              }
+            />
+          </div>
+
+          <button
+            className="auth-btn"
+            onClick={handleLogin}
+          >
+            Login
+          </button>
+
+          <p className="auth-bottom">
+            New user?{" "}
+            <a href="#register">
+              Create account
+            </a>
+          </p>
+        </div>
+
+        <div className="auth-card" id="register">
+          <div className="auth-icon">📝</div>
+
+          <h2>Register</h2>
+
+          <p className="auth-text">
+            Create a new portfolio account
+          </p>
+
+          <div className="input-group">
+            <label>Full Name</label>
+
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={regName}
+              onChange={(e) =>
+                setRegName(e.target.value)
+              }
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Email Address</label>
+
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={regEmail}
+              onChange={(e) =>
+                setRegEmail(e.target.value)
+              }
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Password</label>
+
+            <input
+              type="password"
+              placeholder="Create password"
+              value={regPassword}
+              onChange={(e) =>
+                setRegPassword(e.target.value)
+              }
+            />
+          </div>
+
+          <button
+            className="auth-btn"
+            onClick={handleRegister}
+          >
+            Register
+          </button>
+
+          <p className="auth-bottom">
+            Already have an account?{" "}
+            <a href="#login">Login here</a>
+          </p>
+        </div>
+      </section>
+
+      <section className="contact-section" id="contact">
+        <h2>Contact</h2>
+
+        <p>Email: nsasankaru@example.com</p>
+
+        <p>Phone: +91 9876543210</p>
+      </section>
+
       <footer className="footer">
-        <p>© 2026 N Sasankaru Reddy | Full Stack Developer</p>
+        <p>
+          © 2026 N Sasankaru Reddy |
+          Full Stack Developer
+        </p>
       </footer>
     </div>
   );
