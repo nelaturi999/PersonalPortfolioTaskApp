@@ -11,6 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Backend API is running successfully");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
@@ -19,6 +23,8 @@ mongoose
   .then(() => console.log("MongoDB Connected Successfully"))
   .catch((error) => console.log("MongoDB Connection Error:", error));
 
-app.listen(8000, () => {
-  console.log("Server running on port 8000");
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
