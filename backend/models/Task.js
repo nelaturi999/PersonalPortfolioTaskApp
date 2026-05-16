@@ -5,6 +5,7 @@ const taskSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
     },
 
     description: {
@@ -17,9 +18,7 @@ const taskSchema = new mongoose.Schema(
       default: false,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Task", taskSchema);
