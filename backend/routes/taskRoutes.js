@@ -5,9 +5,14 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const tasks = await Task.find().sort({ createdAt: -1 });
+    const tasks = await Task.find().sort({
+      createdAt: -1,
+    });
+
     res.json(tasks);
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       message: "Failed to fetch tasks",
     });
@@ -17,12 +22,6 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { title, description } = req.body;
-
-    if (!title || !description) {
-      return res.status(400).json({
-        message: "Title and description are required",
-      });
-    }
 
     const task = new Task({
       title,
@@ -34,6 +33,8 @@ router.post("/", async (req, res) => {
 
     res.status(201).json(task);
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       message: "Failed to add task",
     });
@@ -45,11 +46,15 @@ router.put("/:id", async (req, res) => {
     const task = await Task.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      {
+        new: true,
+      }
     );
 
     res.json(task);
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       message: "Failed to update task",
     });
@@ -64,6 +69,8 @@ router.delete("/:id", async (req, res) => {
       message: "Task deleted successfully",
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       message: "Failed to delete task",
     });
