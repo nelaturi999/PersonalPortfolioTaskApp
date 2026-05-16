@@ -14,8 +14,8 @@ function App() {
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
 
-  const AUTH_API = "http://localhost:8000/api/auth";
-  const TASK_API = "http://localhost:8000/api/tasks";
+const AUTH_API = "https://your-backend-name.onrender.com/api/auth";
+const TASK_API = "https://your-backend-name.onrender.com/api/tasks";
 
   const fetchTasks = async () => {
     try {
