@@ -4,319 +4,353 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  background-color: #0f1b2d;
   font-family: Arial, sans-serif;
-  background: #0f172a;
   color: white;
 }
 
-/* NAVBAR */
+.app {
+  min-height: 100vh;
+  background: #0f1b2d;
+}
 
 .navbar {
-  background: #020617;
-  padding: 18px 40px;
+  height: 90px;
+  background-color: #050817;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  justify-content: space-between;
+  padding: 0 60px;
 }
 
 .logo {
   color: #38bdf8;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: bold;
 }
 
 .nav-links {
   display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
+  gap: 32px;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
+  font-size: 18px;
   font-weight: bold;
-  transition: 0.3s;
 }
 
 .nav-links a:hover {
   color: #38bdf8;
 }
 
-/* PAGE */
-
-.page {
-  min-height: 100vh;
-  padding: 50px 8%;
-}
-
-/* HERO SECTION */
-
 .hero {
-  background: linear-gradient(135deg, #1e293b, #0f172a);
+  display: flex;
+  justify-content: center;
+  padding: 70px 20px 40px;
+}
+
+.hero-card {
+  width: 80%;
+  background: #172338;
+  padding: 55px 30px;
   border-radius: 22px;
-  padding: 70px 30px;
   text-align: center;
-  margin-bottom: 50px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
-.hero h1 {
-  font-size: 50px;
-  color: #38bdf8;
-  margin-bottom: 15px;
-}
-
-.hero h3 {
-  font-size: 24px;
-  color: #cbd5e1;
+.profile-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
   margin-bottom: 20px;
+  border: 4px solid #38bdf8;
 }
 
-.hero p {
-  max-width: 800px;
+.hero-card h2 {
+  color: #38bdf8;
+  font-size: 45px;
+  margin-bottom: 8px;
+}
+
+.hero-card h3 {
+  color: #cbd5e1;
+  font-size: 26px;
+  margin-bottom: 28px;
+}
+
+.hero-card p {
+  font-size: 21px;
+  line-height: 1.7;
+  color: #e5e7eb;
+  max-width: 900px;
   margin: auto;
-  line-height: 1.8;
-  color: #e2e8f0;
-  font-size: 18px;
 }
 
 .hero-buttons {
   margin-top: 30px;
-}
-
-/* BUTTONS */
-
-.btn,
-button {
-  background: #38bdf8;
-  color: #020617;
-  padding: 13px 24px;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  margin: 5px;
-  transition: 0.3s;
-}
-
-.btn:hover,
-button:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-.secondary {
-  background: transparent;
-  border: 2px solid #38bdf8;
-  color: #38bdf8;
-}
-
-/* CARDS */
-
-.cards-section,
-.skills-grid,
-.task-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  margin-top: 35px;
-}
-
-.card,
-.task-card,
-.project-card,
-.about-box,
-.contact-card,
-.auth-form,
-.contact-form {
-  background: #1e293b;
-  padding: 25px;
-  border-radius: 18px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-}
-
-.card h3,
-.task-card h3,
-.project-card h3 {
-  color: #38bdf8;
-  margin-bottom: 12px;
-}
-
-/* TITLES */
-
-.title {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 30px;
-  color: #38bdf8;
-}
-
-.section-title {
-  margin-top: 45px;
-  margin-bottom: 20px;
-  color: #38bdf8;
-  font-size: 30px;
-}
-
-/* SKILLS */
-
-.skills-grid span {
-  background: #334155;
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.skills-grid span:hover {
-  background: #38bdf8;
-  color: #020617;
-}
-
-/* FORMS */
-
-.task-form,
-.auth-form,
-.contact-form {
   display: flex;
-  flex-direction: column;
-  gap: 18px;
-  max-width: 600px;
-  margin: 30px auto;
+  justify-content: center;
+  gap: 15px;
 }
 
-input,
-textarea {
-  padding: 15px;
+.main-btn,
+button {
+  background-color: #38bdf8;
+  color: #020617;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.main-btn:hover,
+button:hover {
+  transform: translateY(-3px);
+  transition: 0.3s;
+}
+
+.outline-btn {
+  background: transparent;
+  color: #38bdf8;
+  border: 2px solid #38bdf8;
+}
+
+.cards-section {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px 20px;
+  flex-wrap: wrap;
+}
+
+.info-card {
+  width: 300px;
+  background-color: #1e293b;
+  padding: 32px;
+  border-radius: 18px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.info-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2);
+}
+
+.info-card h3 {
+  color: #38bdf8;
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+
+.info-card p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.skills-section {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.skills-section h2 {
+  color: #38bdf8;
+  font-size: 34px;
+  margin-bottom: 25px;
+}
+
+.skills {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.skills span {
+  background-color: #1e293b;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 30px;
+  font-size: 18px;
+  border: 1px solid #38bdf8;
+}
+
+.stats-section {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  width: 240px;
+  background-color: #172338;
+  padding: 30px;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.stat-card h2 {
+  font-size: 40px;
+  color: #38bdf8;
+}
+
+.stat-card p {
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.task-manager {
+  width: 80%;
+  margin: 40px auto;
+  background: #172338;
+  padding: 35px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.task-manager h2 {
+  color: #38bdf8;
+  margin-bottom: 25px;
+  font-size: 34px;
+}
+
+.task-input-box {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.task-input-box input {
+  width: 60%;
+  padding: 14px;
   border-radius: 10px;
   border: none;
   font-size: 16px;
   outline: none;
 }
 
-textarea {
-  min-height: 130px;
-  resize: none;
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
 }
 
-/* TASK BUTTONS */
+.task-item span {
+  font-size: 18px;
+}
 
-.task-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 15px;
-  flex-wrap: wrap;
+.task-item button {
+  margin-left: 10px;
+  padding: 10px 18px;
+  font-size: 15px;
 }
 
 .delete-btn {
-  background: #ef4444;
+  background-color: #ef4444;
   color: white;
 }
 
-/* FOOTER */
+.completed {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.empty-task {
+  color: #cbd5e1;
+  font-size: 18px;
+}
 
 .footer {
-  background: #020617;
+  background-color: #050817;
   text-align: center;
   padding: 25px;
+  margin-top: 40px;
+}
+
+.footer p {
   color: #cbd5e1;
-  margin-top: 50px;
+  font-size: 16px;
 }
 
-/* RESPONSIVE DESIGN */
-
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .navbar {
+    height: auto;
     flex-direction: column;
-    gap: 15px;
-    padding: 18px 20px;
+    padding: 25px;
+    gap: 20px;
   }
 
   .nav-links {
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 14px;
+    gap: 18px;
   }
 
-  .hero {
-    padding: 50px 18px;
+  .hero-card {
+    width: 95%;
+    padding: 35px 20px;
   }
 
-  .hero h1 {
-    font-size: 34px;
+  .hero-card h2 {
+    font-size: 32px;
   }
 
-  .hero h3 {
-    font-size: 20px;
-  }
-
-  .hero p {
-    font-size: 16px;
-  }
-
-  .cards-section,
-  .skills-grid,
-  .task-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 500px) {
-  .page {
-    padding: 25px 16px;
-  }
-
-  .navbar {
-    padding: 16px;
-  }
-
-  .logo {
+  .hero-card h3 {
     font-size: 22px;
-    text-align: center;
   }
 
-  .nav-links {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero h3 {
+  .hero-card p {
     font-size: 18px;
   }
 
-  .title {
-    font-size: 30px;
-  }
-
   .hero-buttons {
-    display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
-  .btn,
+  .main-btn,
   button {
-    width: 100%;
-    text-align: center;
+    width: 220px;
   }
 
-  .task-buttons {
+  .task-manager {
+    width: 95%;
+    padding: 25px 15px;
+  }
+
+  .task-input-box {
     flex-direction: column;
+    align-items: center;
   }
 
-  input,
-  textarea {
+  .task-input-box input {
     width: 100%;
+  }
+
+  .task-item {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .task-item button {
+    margin: 5px;
   }
 }
