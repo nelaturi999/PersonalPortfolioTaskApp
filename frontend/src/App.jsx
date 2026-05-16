@@ -14,8 +14,8 @@ function App() {
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
 
-const AUTH_API = "https://your-backend-name.onrender.com/api/auth";
-const TASK_API = "https://your-backend-name.onrender.com/api/tasks";
+const AUTH_API = "https://personalportfoliotaskapp.onrender.com/api/auth";
+const TASK_API = "https://personalportfoliotaskapp.onrender.com/api/tasks";
 
   const fetchTasks = async () => {
     try {
@@ -420,7 +420,7 @@ const TASK_API = "https://your-backend-name.onrender.com/api/tasks";
 
         <p>Email: nsasankaru@example.com</p>
 
-        <p>Phone: +91 9876543210</p>
+        <p>Phone: +91 9912875988</p>
       </section>
 
       <footer className="footer">
