@@ -418,7 +418,7 @@ const TASK_API = "https://personalportfoliotaskapp.onrender.com/api/tasks";
       <section className="contact-section" id="contact">
         <h2>Contact</h2>
 
-        <p>Email: nsasankaru@example.com</p>
+        <p>Email: nelaturisasankarureddy@gmail.com.com</p>
 
         <p>Phone: +91 9912875988</p>
       </section>
